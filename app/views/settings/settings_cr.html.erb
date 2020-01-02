@@ -1,0 +1,54 @@
+Upload CR problems
+
+<br><br>
+<%= form_tag importcr_settings_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+<% end %>
+
+<br><br>
+List of problems
+<br>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>source</th>
+        <th>edition</th>
+        <th>question_type</th>
+        <th>difficulty</th>
+        <th>question_no</th>
+        <th>original_text_1</th>
+        <th>original_text_2</th>
+        <th>answer</th>
+        <th>action</th>
+        <th>Google 1</th>
+        <th>Google 2</th>
+    </tr>
+    <%# Problemcr.where.not({:difficulty => "Low"}).order(id: :ASC).each do |cr| %>
+    <% Problemcr.all.order(id: :ASC).each do |cr| %>
+    <tr>
+        <td><%= cr.id %></td>
+        <td><%= cr.source %></td>
+        <td><%= cr.edition %></td>
+        <td><%= cr.question_type %></td>
+        <td><%= cr.difficulty %></td>
+        <td><%= cr.question_no %></td>
+        <td><%= truncate(cr.original_text_1, :length => 60, :separator => ' ') %></td>
+        <td><%= truncate(cr.original_text_2, :length => 60, :separator => ' ') %></td>
+        <td><%= cr.question_no %></td> <!-- answer -->
+        <td><%= cr.difficulty %></td> <!-- Delete -->
+        <td><a href ="https://www.google.com/search?q=GMAT+CR+<%= cr.original_text_1 %>" target=”_blank”>search</a></td>
+        <td><a href ="https://www.google.com/search?q=GMAT+CR+<%= cr.original_text_2 %>" target=”_blank”>search</a></td>
+    </tr>
+    <% end %>
+</table>
+
+<br>
+<button type="button" onClick="window.location.href='/delete_cr'">Delete all questions</button>

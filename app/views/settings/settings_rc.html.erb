@@ -1,0 +1,88 @@
+Upload RC problems here
+<br><br>
+1. Upload passages
+<br><br>
+<%= form_tag importrcp_settings_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+<% end %>
+
+<br><br>
+2. Upload questions
+<br><br>
+<%= form_tag importrcq_settings_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+<% end %>
+
+<br><br>
+List of passages
+<br>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>unique_id</th>
+        <th>source</th>
+        <th>edition</th>
+        <th>passage_type</th>
+        <th>passage_no</th>
+        <th>row_no</th>
+        <th>original_text</th>
+        <th>action</th>
+    </tr>
+    <% Problemrcp.all.order(id: :ASC).each do |rcp| %>
+    <tr>
+        <td><%= rcp.id %></td>
+        <td><%= rcp.unique_id %></td>
+        <td><%= rcp.source %></td>
+        <td><%= rcp.edition %></td>
+        <td><%= rcp.passage_type %></td>
+        <td><%= rcp.passage_no %></td>
+        <td><%= rcp.row_no %></td>
+        <td><%= rcp.original_text %></td>
+        <td>Delete</td>
+    </tr>
+    <% end %>
+</table>
+
+<br><br>
+List of questions
+<br>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>source</th>
+        <th>edition</th>
+        <th>question_type</th>
+        <th>passage_no</th>
+        <th>question_no</th>
+        <th>original_text</th>
+        <th>answer</th>
+        <th>action</th>
+    </tr>
+    <% Problemrcq.all.order(id: :ASC).each do |rcq| %>
+    <tr>
+        <td><%= rcq.id %></td>
+        <td><%= rcq.source %></td>
+        <td><%= rcq.edition %></td>
+        <td><%#= rcq.question_type %></td>
+        <td><%= rcq.passage_no %></td>
+        <td><%= rcq.question_no %></td>
+        <td><%= rcq.original_text %></td>
+        <td><%= rcq.answer %></td>
+        <td>Delete</td>
+    </tr>
+    <% end %>
+</table>
+
+<br>
+<button type="button" onClick="window.location.href='/delete_rcp'">Delete all passages</button>
+<button type="button" onClick="window.location.href='/delete_rcq'">Delete all questions</button>

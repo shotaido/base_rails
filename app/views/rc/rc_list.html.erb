@@ -1,0 +1,29 @@
+RC: List of questions
+<br><br>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
+<table>
+    <tr>
+        <th>source</th>
+        <th>edition</th>
+        <th>passage_type</th>
+        <th>passage_no</th>
+        <th>original_text</th>
+        <th>action</th>
+    </tr>
+    <% Problemrcp.where("row_no = '1'").order(id: :ASC).each do |rcp| %>
+    <tr>
+        <td><%= rcp.source %></td>
+        <td><%= rcp.edition %></td>
+        <td><%= rcp.passage_type %></td>
+        <td><%= rcp.passage_no %></td>
+        <td><%= rcp.original_text %>...</td>
+        <td><a href ="/rc/<%= rcp.unique_id %>">Practice</a></td>
+    </tr>
+    <% end %>
+</table>

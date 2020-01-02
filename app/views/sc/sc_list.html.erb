@@ -1,0 +1,44 @@
+SC: List of questions
+<br><br>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+<input id="myInput" type="text" placeholder="Search..">
+<br>
+
+<table>
+    <tr>
+        <th>source</th>
+        <th>edition</th>
+        <th>difficulty</th>
+        <th>question no</th>
+        <th>text</th>
+        <th>action</th>
+    </tr>
+    <tbody id="myTable">
+    <% Problemsc.all.order(id: :ASC).each do |sc| %>
+    <tr>
+        <td><%= sc.source %></td>
+        <td><%= sc.edition %></td>
+        <td><%= sc.difficulty %></td>
+        <td><%= sc.question_no %></td>
+        <td><%= truncate(sc.original_text, :length => 100, :separator => ' ') %></td>
+        <td><a href ="/sc/<%= sc.id %>">Practice</a></td>
+    </tr>
+    <% end %>
+</table>

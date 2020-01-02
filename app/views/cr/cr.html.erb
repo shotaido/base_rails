@@ -1,0 +1,82 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #E0E0E0;
+  padding: 16px;
+  font-size: 16px;
+}
+</style>
+</head>
+<div class="sticky"><span id="countdowntimer">90</span> seconds remaining</div>
+
+Critical Reasoning
+<br>
+<%= @source =%>_<%= @edition =%>_<%= @question_no =%>
+<br>
+<br>
+<br>
+<%= @text_1.html_safe =%>
+<br><br>
+<%= @text_2.html_safe =%>
+<br>
+<br>
+A. <%= @option_a =%>
+<br>
+B. <%= @option_b =%>
+<br>
+C. <%= @option_c =%>
+<br>
+D. <%= @option_d =%>
+<br>
+E. <%= @option_e =%>
+<br>
+
+<br><br>
+<button title="Click to Show/Hide Content" type="button">Show answer</button> <button onClick="window.location.href='/cr_hard'">New problem(Hard)</button> <button onClick="window.location.href='/cr_medium'">New problem(Medium)</button> <button onClick="window.location.href='/cr_low'">New problem(Low)</button> <button onClick="window.location.href='/cr'">New problem(All)</button> <button onclick="window.location.href='/'">Back to home</button>
+<div id="spoiler" style="display:none">
+Answer: <%= @answer =%>
+<br>
+Question type: <%= @question_type =%>
+<br>
+Difficulty: <%= @difficulty =%>
+<br><%= @explanation =%>
+<br>
+<% if @ref_link.blank? %>
+<% else %>
+<a href =<%= @ref_link %> target="_blank">Explanation URL</a><% end %>
+
+<br>
+<a href ="https://www.google.com/search?q=GMAT+CR+<%= @original_text_1 %> <%= @original_text_2 %>" target="_blank">Google question</a>
+</div>
+
+<script>
+document.querySelector('button').addEventListener('click', toggle)
+
+function toggle(event) {
+  if (document.getElementById('spoiler').style.display == 'none') {
+    event.target.innerText = 'Hide answer'
+    document.getElementById('spoiler').style.display = ''
+  } else {
+    event.target.innerText = 'Show answer'
+    document.getElementById('spoiler').style.display = 'none'
+  }
+}
+</script>
+
+
+
+<script type="text/javascript">
+    var timeleft = 90;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
+</script>
+
+

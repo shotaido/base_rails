@@ -1,0 +1,107 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #E0E0E0;
+  padding: 16px;
+  font-size: 16px;
+}
+</style>
+</head>
+<div class="sticky"><span id="countdowntimer"><%=@time_remaining=%></span> seconds remaining</div>
+
+
+Reading Comprehension
+<br><%= @source =%>_<%= @edition =%>_<%= @passage_no =%>
+<br>
+<br>
+
+<table>
+<tr>
+    <th>Row</th>
+    <th>Text</th>
+</tr>
+<% Problemrcp.where(["source = ? and edition = ? and passage_no = ?", @source, @edition, @passage_no]).order(row_no: :ASC).each do |rcp| %>
+<tr>
+    <td>
+      <%if rcp.row_no % 5 == 0 %>
+      <%= rcp.row_no %>
+      <%else%>
+      <%end%>
+    </td>
+    <td><%= rcp.original_text %></td>
+</tr>
+<% end %>
+</table>
+
+<br>
+<br>
+<% Problemrcq.where(["source = ? and edition = ? and passage_no = ?", @source, @edition, @passage_no]).each do |rcq| %>
+
+<br>
+<%= rcq.question_no %>. <%= rcq.original_text.html_safe %>
+<br><br>
+A. <%= rcq.option_a %>
+<br>
+B. <%= rcq.option_b %>
+<br>
+C. <%= rcq.option_c %>
+<br>
+D. <%= rcq.option_d %>
+<br>
+E. <%= rcq.option_e %>
+<br>
+<% end %>
+
+<br>
+
+<br>
+<br>
+<button title="Click to Show/Hide Content" type="button">Show answer</button> 
+<br><button onClick="window.location.href='/rc_b'">New problem(Business)</button> <button onClick="window.location.href='/rc_h'">New problem(Humanities)</button> <button onClick="window.location.href='/rc_ns'">New problem(Natural Sciences)</button> <button onClick="window.location.href='/rc_ss'">New problem(Social Sciences)</button> 
+<br><button onClick="window.location.href='/rc_long'">New problem(Long)</button> <button onClick="window.location.href='/rc_short'">New problem(Short)</button>
+<br><button onClick="window.location.href='/rc'">New problem(All)</button>  <button onclick="window.location.href='/'">Back to home</button>
+<div id="spoiler" style="display:none">
+Answer:
+<br>
+<% Problemrcq.where(["source = ? and edition = ? and passage_no = ?", @source, @edition, @passage_no]).each do |rcq| %>
+<%= rcq.question_no %>: <%= rcq.answer %> (<%= rcq.question_type %>, <%= rcq.difficulty %>)
+<br>
+<% end %>
+Passage type: <%= @passage_type %>
+
+<br><%= @explanation =%>
+<br>
+<% if @ref_link.blank? %>
+<% else %>
+<a href =<%= @ref_link %> target="_blank">Explanation URL</a><% end %>
+<br>
+<a href="https://www.google.com/search?q=GMAT+RC+<%= Problemrcp.where(["source = ? and edition = ? and passage_no = ?", @source, @edition, @passage_no]).pluck("original_text").first %>" target="_blank">Google question</a>
+</div>
+
+<script>
+document.querySelector('button').addEventListener('click', toggle)
+
+function toggle(event) {
+  if (document.getElementById('spoiler').style.display == 'none') {
+    event.target.innerText = 'Hide answer'
+    document.getElementById('spoiler').style.display = ''
+  } else {
+    event.target.innerText = 'Show answer'
+    document.getElementById('spoiler').style.display = 'none'
+  }
+}
+</script>
+
+<script type="text/javascript">
+    var timeleft = <%=@time_remaining=%>;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
+</script>
